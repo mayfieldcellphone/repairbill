@@ -9,7 +9,20 @@ import {
   sendPasswordResetEmail
 } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
-import firebaseConfig from '../../firebase-applet-config.json';
+
+// Firebase config from environment variables (VITE_ prefix = exposed to client)
+// Set these on your VPS (e.g., in /etc/environment or .env at build time)
+// Never commit real values to Git
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  firestoreDatabaseId: import.meta.env.VITE_FIREBASE_FIRESTORE_DB_ID || '(default)',
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || '',
+};
 
 const app = initializeApp(firebaseConfig);
 export const db = (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)') 
